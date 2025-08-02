@@ -1,5 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
-import './App.css';
+import { useRef, useState } from 'react';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Experience from './sections/Experience';
@@ -15,29 +14,12 @@ function App() {
   const projectsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
-  const [showTop, setShowTop] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
-    setMenuOpen(false); // ✅ Close menu on click
+    setMenuOpen(false);
   };
-
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setScrollProgress(progress);
-      setShowTop(scrollTop > 200);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const sectionVariant = {
     hidden: { opacity: 0, y: 60 },
@@ -45,69 +27,60 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div
-        className="scroll-progress"
-        style={{ width: `${scrollProgress}%` }}
-      ></div>
-
-      <div className="navbar-wrapper">
-        <nav className="navbar box-shadow">
-          <div className="navbar-header">
-            <div className="navbar-logo">Kuldip Boghara</div>
-            <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-              <span></span>
-              <span></span>
-              <span></span>
+    <div className="pt-[100px] overflow-x-hidden app bg-black text-green-400 min-h-screen">
+      {/* Navbar */}
+      <div className="fixed top-0 left-0 right-0 z-[1000]">
+        <nav className="w-full mx-auto px-8 py-4 grid grid-cols-[1fr_auto_1fr] items-center navbar backdrop-blur bg-black/70 shadow-md text-green-400 relative z-[1001]">
+          <div className="flex items-center justify-between w-full col-span-3 md:col-span-1">
+            <h1 className="text-2xl font-bold text-green-300">
+              Kuldip Boghara
+            </h1>
+            <div
+              className="flex flex-col gap-1 md:hidden cursor-pointer"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span className="h-[3px] w-6 bg-gray-800 transition-all"></span>
+              <span className="h-[3px] w-6 bg-gray-800 transition-all"></span>
+              <span className="h-[3px] w-6 bg-gray-800 transition-all"></span>
             </div>
           </div>
 
-          <div className={`nav-center ${menuOpen ? 'open' : ''}`}>
-            <ul className="nav-links">
+          <div
+            className={`${
+              menuOpen ? 'flex' : 'hidden'
+            } md:flex flex-col md:flex-row items-center justify-center gap-4 mt-4 md:mt-0 col-span-3 md:col-span-1`}
+          >
+            <ul className="flex flex-col md:flex-row gap-4 items-center list-none m-0 p-0">
               <li
-                onClick={() => {
-                  scrollToSection(aboutRef);
-                  setMenuOpen(false);
-                }}
+                onClick={() => scrollToSection(aboutRef)}
+                className="cursor-pointer font-medium hover:text-blue-600"
               >
                 About
               </li>
               <li
-                onClick={() => {
-                  scrollToSection(skillsRef);
-                  setMenuOpen(false);
-                }}
+                onClick={() => scrollToSection(skillsRef)}
+                className="cursor-pointer font-medium hover:text-blue-600"
               >
                 Skills
               </li>
               <li
-                onClick={() => {
-                  scrollToSection(experienceRef);
-                  setMenuOpen(false);
-                }}
-              >
-                Experience
-              </li>
+                onClick={() => scrollToSection(experienceRef)}
+                className="cursor-pointer font-medium hover:text-blue-600"
+              ></li>
               <li
-                onClick={() => {
-                  scrollToSection(projectsRef);
-                  setMenuOpen(false);
-                }}
+                onClick={() => scrollToSection(projectsRef)}
+                className="cursor-pointer font-medium hover:text-blue-600"
               >
                 Projects
               </li>
               <li
-                onClick={() => {
-                  scrollToSection(contactRef);
-                  setMenuOpen(false);
-                }}
+                onClick={() => scrollToSection(contactRef)}
+                className="cursor-pointer font-medium hover:text-blue-600"
               >
                 Contact
               </li>
-
-              {/* ✅ Mobile-only CV Button */}
               <a
-                className="cv-button mobile"
+                className="block md:hidden w-full text-center bg-green-600 hover:bg-green-500 text-black font-bold px-4 py-2 rounded transition-all mt-2"
                 href="/Resume Kuldip Boghara.pdf"
                 download
               >
@@ -116,9 +89,8 @@ function App() {
             </ul>
           </div>
 
-          {/* ✅ Desktop-only CV Button */}
           <a
-            className="cv-button desktop"
+            className="hidden md:inline-block justify-self-end bg-green-600 hover:bg-green-500 text-black font-bold px-4 py-2 rounded-md transition-all"
             href="/Resume Kuldip Boghara.pdf"
             download
           >
@@ -129,10 +101,11 @@ function App() {
 
       <Hero />
 
+      {/* Sections */}
       <motion.div
         layout
         ref={aboutRef}
-        className="section-container"
+        className="max-w-5xl mx-auto px-8 py-16"
         variants={sectionVariant}
         initial="hidden"
         animate="visible"
@@ -144,7 +117,7 @@ function App() {
       <motion.div
         layout
         ref={skillsRef}
-        className="section-container"
+        className="max-w-5xl mx-auto px-8 py-16"
         variants={sectionVariant}
         initial="hidden"
         whileInView="visible"
@@ -156,7 +129,7 @@ function App() {
       <motion.div
         layout
         ref={experienceRef}
-        className="section-container"
+        className="max-w-5xl mx-auto px-8 pt-16 pb-8"
         variants={sectionVariant}
         initial="hidden"
         animate="visible"
@@ -168,7 +141,7 @@ function App() {
       <motion.div
         layout
         ref={projectsRef}
-        className="section-container"
+        className="max-w-5xl mx-auto px-8 pt-16 pb-8"
         variants={sectionVariant}
         initial="hidden"
         animate="visible"
@@ -180,7 +153,7 @@ function App() {
       <motion.div
         layout
         ref={contactRef}
-        className="section-container"
+        className="max-w-5xl mx-auto px-8 py-16"
         variants={sectionVariant}
         initial="hidden"
         animate="visible"
@@ -188,12 +161,6 @@ function App() {
       >
         <Contact />
       </motion.div>
-
-      {showTop && (
-        <button className="back-to-top" onClick={scrollToTop}>
-          ⬆ Top
-        </button>
-      )}
     </div>
   );
 }

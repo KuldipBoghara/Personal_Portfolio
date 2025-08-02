@@ -1,16 +1,15 @@
 import { motion } from 'framer-motion';
-import styles from './Hero.module.css';
 
 const Hero = () => {
   return (
     <motion.section
-      className={styles.hero}
+      className="h-[70vh] flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-white px-8 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
       <motion.h1
-        className={styles.title}
+        className="text-4xl md:text-5xl font-bold mb-4"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -18,7 +17,7 @@ const Hero = () => {
         Hi, I'm Kuldip
       </motion.h1>
       <motion.p
-        className={styles.subtitle}
+        className="text-lg text-gray-600"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
